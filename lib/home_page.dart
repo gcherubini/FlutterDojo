@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _username = '';
+  bool _isButtonEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +25,27 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: HomePage._contentHorizontalPixelSpacing,
-                vertical: 0.0
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(HomePage._enterUserNameText),
-                TextField(
-                  onChanged: (username) {
-                    this._username = username;
-                  },
-                )
-              ],
-            ),
-          )
-      ),
+        padding: const EdgeInsets.symmetric(
+            horizontal: HomePage._contentHorizontalPixelSpacing, vertical: 0.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(HomePage._enterUserNameText),
+            TextField(
+              onChanged: (username) {
+                this._username = username;
+                setState(() {
+                  _isButtonEnabled = username.isNotEmpty;
+                });
+              },
+            )
+          ],
+        ),
+      )),
       floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToRepositoriesPage,
+        onPressed: _isButtonEnabled ? _navigateToRepositoriesPage : null,
+        disabledElevation: 0.0,
+        backgroundColor: _isButtonEnabled ? Colors.blue : Colors.grey,
         tooltip: 'Submit',
         child: Icon(Icons.navigate_next),
       ),
@@ -50,11 +53,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateToRepositoriesPage() {
-    Navigator.pushNamed(
-        context,
-        RepositoriesPage.kRouteName,
-        arguments: RepositoriesPageArguments(_username)
-    );
+    Navigator.pushNamed(context, RepositoriesPage.kRouteName);
   }
-
 }
