@@ -53,6 +53,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _navigateToRepositoriesPage() {
-    Navigator.pushNamed(context, RepositoriesPage.kRouteName);
+    Navigator.pushNamed(context, RepositoriesPage.kRouteName,
+        arguments: RepositoriesPageArguments(_username));
   }
 }
