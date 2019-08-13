@@ -9,7 +9,7 @@ class RepositoriesPageArguments {
 
 class RepositoriesPage extends StatelessWidget {
 
-  static const routeName = '/repositories';
+  static const kRouteName = '/repositories';
 
   static const _appBarTitle = 'GitHub Client';
 

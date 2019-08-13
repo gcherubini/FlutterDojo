@@ -5,8 +5,6 @@ import 'package:flutter_dojo/repositories_page.dart';
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
-  static const routeName = '/';
-
   static const _appBarTitle = 'GitHub Client';
   static const _enterUserNameText = 'Enter your GitHub username:';
   static const _contentHorizontalPixelSpacing = 50.0;
@@ -54,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   void _navigateToRepositoriesPage() {
     Navigator.pushNamed(
         context,
-        RepositoriesPage.routeName,
+        RepositoriesPage.kRouteName,
         arguments: RepositoriesPageArguments(_username)
     );
   }

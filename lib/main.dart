@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: HomePage.routeName,
+      initialRoute: '/',
       routes: {
-        HomePage.routeName: (context) => HomePage(),
-        RepositoriesPage.routeName: (context) => RepositoriesPage()
+        '/': (context) => HomePage(),
+        RepositoriesPage.kRouteName: (context) => RepositoriesPage()
       },
     );
   }
