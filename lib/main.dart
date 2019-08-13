@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dojo/home_page.dart';
 import 'package:flutter_dojo/repositories_page.dart';
+import 'package:flutter_dojo/repository_detail_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        RepositoriesPage.kRouteName: (context) => RepositoriesPage()
+        RepositoriesPage.kRouteName: (context) => RepositoriesPage(),
+        RepositoryDetailPage.kRouteName: (context) => RepositoryDetailPage()
       },
     );
   }
