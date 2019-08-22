@@ -6,8 +6,9 @@ import 'model/repository_model.dart';
 
 class RepositoriesPageArguments {
   final String userName;
+  final List<RepositoryModel> repositories;
 
-  RepositoriesPageArguments(this.userName);
+  RepositoriesPageArguments(this.userName, this.repositories);
 }
 
 class RepositoriesPage extends StatelessWidget {
@@ -22,8 +23,7 @@ class RepositoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RepositoriesPageArguments args = ModalRoute.of(context).settings.arguments;
-
-    _setupRepositories();
+    _repositories = args.repositories;
 
     return Scaffold(
         appBar: AppBar(
@@ -42,27 +42,13 @@ class RepositoriesPage extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Text(args.userName),
+            SizedBox(height: 10),
+            Divider(),
             Expanded(
               child: _buildListView(),
             ),
           ],
         ));
-  }
-
-  void _setupRepositories() {
-    _repositories = List();
-    _repositories.add(RepositoryModel(
-        'Repository 1',
-        'Repository description 1'));
-    _repositories.add(RepositoryModel(
-        'Repository 2',
-        null));
-    _repositories.add(RepositoryModel(
-        'Repository 3',
-        'Repository description 3'));
-    _repositories.add(RepositoryModel(
-        'Repository 4',
-        'Repository description 4'));
   }
 
   ListView _buildListView() {
