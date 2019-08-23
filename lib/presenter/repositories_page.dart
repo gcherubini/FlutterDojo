@@ -16,13 +16,15 @@ class RepositoriesPage extends StatelessWidget {
 
   static const _appBarTitle = 'Repositories';
   static const _avatarUrl = 'https://avatars.githubusercontent.com/{userName}';
+  static const _noRepositoriesFoundMessage = 'This user has no repositories.';
   static const _avatarImageSize = 120.0;
 
   List<RepositoryModel> _repositories;
 
   @override
   Widget build(BuildContext context) {
-    final RepositoriesPageArguments args = ModalRoute.of(context).settings.arguments;
+    final RepositoriesPageArguments args =
+        ModalRoute.of(context).settings.arguments;
     _repositories = args.repositories;
 
     return Scaffold(
@@ -30,7 +32,6 @@ class RepositoriesPage extends StatelessWidget {
           title: Text(RepositoriesPage._appBarTitle),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: 20),
             ClipOval(
@@ -44,18 +45,30 @@ class RepositoriesPage extends StatelessWidget {
             Text(args.userName),
             SizedBox(height: 10),
             Divider(),
-            Expanded(
-              child: _buildListView(),
-            ),
+            _buildRepositoriesList(),
           ],
         ));
   }
 
-  ListView _buildListView() {
-    return ListView.builder(
-        itemCount: _repositories.length,
-        itemBuilder: (BuildContext context, int index) =>
-            _buildListTile(context, _repositories[index]));
+  Widget _buildRepositoriesList() {
+    return _repositories.isEmpty
+        ? _buildEmptyRepositoryLayout()
+        : _buildListView();
+  }
+
+  Column _buildEmptyRepositoryLayout() {
+    return Column(children: <Widget>[
+      SizedBox(height: 30),
+      Text(_noRepositoriesFoundMessage)
+    ]);
+  }
+
+  Expanded _buildListView() {
+    return Expanded(
+        child: ListView.builder(
+            itemCount: _repositories.length,
+            itemBuilder: (BuildContext context, int index) =>
+                _buildListTile(context, _repositories[index])));
   }
 
   ListTile _buildListTile(BuildContext context, RepositoryModel repository) {
@@ -67,7 +80,8 @@ class RepositoriesPage extends StatelessWidget {
     );
   }
 
-  void _navigateToRepositoryDetailPage(BuildContext context, RepositoryModel repository) {
+  void _navigateToRepositoryDetailPage(
+      BuildContext context, RepositoryModel repository) {
     Navigator.pushNamed(context, RepositoryDetailPage.kRouteName,
         arguments: RepositoryDetailPageArguments(repository));
   }
