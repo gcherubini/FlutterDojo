@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,27 +63,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future _getUserRepositories() {
-    print('GetUserRepositories - Start');
-
+  void _getUserRepositories() {
     get(HomePage._getRepositoriesUrl.replaceFirst('{userName}', _username))
         .then((response) {
-          if (response.statusCode == 200) {
-            print('GetUserRepositories - 200');
-            Iterable list = json.decode(response.body);
-            var repositories = list.map((dynamic model) => RepositoryModel.fromJson(model)).toList();
-            _navigateToRepositoriesPage(repositories);
-          } else {
-            print('GetUserRepositories - different than 200');
-            _showErrorAlert(HomePage._userNotFoundAlertMessage);
-          }
-        })
-        .catchError((error) {
+      switch (response.statusCode) {
+        case HttpStatus.ok:
+          _handleGetRepositoriesSuccessResponse(response);
+          break;
+        case HttpStatus.notFound:
+          _showErrorAlert(HomePage._userNotFoundAlertMessage);
+          break;
+        default:
           _showErrorAlert(HomePage._userGenericAlertMessage);
-          print('GetUserRepositories - $error');
-        });
+      }
+    }).catchError((error) {
+      _showErrorAlert(HomePage._userGenericAlertMessage);
+    });
+  }
 
-    print('GetUserRepositories - End');
+  void _handleGetRepositoriesSuccessResponse(Response response) {
+    Iterable list = json.decode(response.body);
+    var repositories =
+        list.map((dynamic model) => RepositoryModel.fromJson(model)).toList();
+    _navigateToRepositoriesPage(repositories);
   }
 
   Future<void> _showErrorAlert(String errorMessage) async {
